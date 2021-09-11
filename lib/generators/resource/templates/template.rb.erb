@@ -1,0 +1,49 @@
+class Api::V2::<%= class_name %>Controller < Api::V2::BaseController
+  include Api::V2::Concerns::Actionable
+
+  protected
+
+  def allow_all
+    true
+  end
+
+  def allowed_associations
+    [:organisation]
+  end
+
+  def allowed_sortings
+    [:email, :name, :role]
+  end
+
+  def collection
+    super.includes(:organisation)
+  end
+
+  def filterable_fields
+    [:email, :name, :role, :organisation_id]
+  end
+
+  def permitted_create_params
+    super.permit(*whitelist)
+  end
+
+  def permitted_update_params(_resource)
+    super.permit(*whitelist)
+  end
+
+  def whitelist
+    [
+      :organisation_id,
+      :name,
+      :email,
+      :role,
+      :password,
+      :password_confirmation
+    ]
+  end
+
+  def destroyable
+    true
+  end
+end
+
