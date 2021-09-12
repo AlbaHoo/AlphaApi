@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 require "alpha_api/application_settings"
 require "alpha_api/namespace_settings"
+require 'api-pagination'
 
 module AlphaApi
   class Application
@@ -43,6 +44,23 @@ module AlphaApi
     # Runs before the app's initializer
     def before_initializer!
       puts 'before initializer'
+      ApiPagination.configure do |config|
+        config.page_param do |params|
+          if params[:page].is_a?(ActionController::Parameters) && params[:page].include?(:number)
+            params[:page][:number]
+          else
+            1
+          end
+        end
+
+        config.per_page_param do |params|
+          if params[:page].is_a?(ActionController::Parameters) && params[:page].include?(:size)
+            params[:page][:size]
+          else
+            10
+          end
+        end
+      end
     end
 
     # Runs after the app's initializer

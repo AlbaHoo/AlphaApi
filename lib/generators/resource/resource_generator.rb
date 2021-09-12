@@ -10,16 +10,27 @@ module AlphaApi
 
       source_root File.expand_path("templates", __dir__)
 
-      def generate_config_file
-        @boilerplate = Boilerplate.new(class_name)
-        template "template.rb.erb", "app/controllers/#{file_path.tr('/', '_').pluralize}_controller.rb"
+      def generate_controller_file
+        prefix = AlphaApi.application.settings.api_prefix
+        @boilerplate = Boilerplate.new(class_name, prefix)
+        template "controller.rb.erb", "app/controllers/#{prefix}/#{file_path.tr('/', '_').pluralize}_controller.rb"
       end
 
+      def generate_serializer_file
+        prefix = AlphaApi.application.settings.api_prefix
+        @boilerplate = Boilerplate.new(class_name, prefix)
+        template "serializer.rb.erb", "app/serializers/#{prefix}/#{file_path.tr('/', '_')}_serializer.rb"
+      end
     end
 
     class Boilerplate
-      def initialize(class_name)
+      def initialize(class_name, module_path)
+        @module_path = module_path
         @class_name = class_name
+      end
+
+      def module_name
+        @module_path.split('/').map(&:capitalize).join('::')
       end
 
       def attributes
