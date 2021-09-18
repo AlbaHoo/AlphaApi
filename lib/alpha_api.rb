@@ -6,6 +6,7 @@ require_relative "generators/resource/resource_generator"
 require_relative "generators/install/install_generator"
 require_relative 'alpha_api/application_settings'
 require_relative 'alpha_api/concerns/actionable'
+require_relative 'alpha_api/base_controller'
 require_relative 'alpha_api/serializers/application_record_serializer'
 
 module AlphaApi

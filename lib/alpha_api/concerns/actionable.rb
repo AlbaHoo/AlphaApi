@@ -1,4 +1,5 @@
 require "active_support/concern"
+require_relative '../exceptions'
 
 module AlphaApi
   module Concerns
@@ -14,7 +15,7 @@ module AlphaApi
           render status: :created, json: resource_serializer.new(new_resource).serializable_hash
         else
           errors = reformat_validation_error(new_resource)
-          raise Exceptions::ValidationErrors.new(errors), 'Validation Errors'
+          raise AlphaApi::Exceptions::ValidationErrors.new(errors), 'Validation Errors'
         end
       end
 
@@ -50,7 +51,7 @@ module AlphaApi
           render json: resource_serializer.new(updated_resource, options).serializable_hash
         else
           errors = reformat_validation_error(resource)
-          raise Exceptions::ValidationErrors.new(errors), 'Validation Errors'
+          raise AlphaApi::Exceptions::ValidationErrors.new(errors), 'Validation Errors'
         end
       end
 
@@ -61,10 +62,10 @@ module AlphaApi
           if resource.destroy
             head :no_content
           else
-            raise Exceptions::ValidationErrors.new(resource.errors), 'Validation Errors'
+            raise AlphaApi::Exceptions::ValidationErrors.new(resource.errors), 'Validation Errors'
           end
         else
-          raise Exceptions::MethodNotAllowed, 'Method Not Allowed'
+          raise AlphaApi::Exceptions::MethodNotAllowed, 'Method Not Allowed'
         end
       end
 
@@ -92,7 +93,7 @@ module AlphaApi
       # @override customised filters
       def apply_filter(query)
         if filterable_fields.empty?
-          raise Exceptions::InvalidFilter, 'Filters are not supported for this resource type'
+          raise AlphaApi::Exceptions::InvalidFilter, 'Filters are not supported for this resource type'
         else
           query
         end
@@ -128,7 +129,7 @@ module AlphaApi
           elsif valid_boolean?(field, value)
             query = query.where(field => value == 'true')
           else
-            raise Exceptions::InvalidFilter, 'Only type of string and uuid fields are supported'
+            raise AlphaApi::Exceptions::InvalidFilter, 'Only type of string and uuid fields are supported'
           end
         end
         query
@@ -153,10 +154,10 @@ module AlphaApi
         if allow_all && page_size == -1
           params[:page] = nil
         else
-          raise Exceptions::InvalidRequest, 'Page number must be positive' unless page_number.positive?
-          raise Exceptions::InvalidRequest, 'Page offset must be non-negative' if page_offset.negative?
-          raise Exceptions::InvalidRequest, 'Page size must be positive' unless page_size.positive?
-          raise Exceptions::InvalidRequest, 'Page size cannot be greater than 100' if page_size > 100
+          raise AlphaApi::Exceptions::InvalidRequest, 'Page number must be positive' unless page_number.positive?
+          raise AlphaApi::Exceptions::InvalidRequest, 'Page offset must be non-negative' if page_offset.negative?
+          raise AlphaApi::Exceptions::InvalidRequest, 'Page size must be positive' unless page_size.positive?
+          raise AlphaApi::Exceptions::InvalidRequest, 'Page size cannot be greater than 100' if page_size > 100
 
           params[:page] = {
             number: page_number,
@@ -173,13 +174,13 @@ module AlphaApi
       def apply_sorting(query)
         sort_params = params['sort']
         return query.order(default_sorting) unless sort_params.present?
-        raise Exceptions::InvalidRequest, 'Sort parameter must be a string' unless sort_params.is_a? String
+        raise AlphaApi::Exceptions::InvalidRequest, 'Sort parameter must be a string' unless sort_params.is_a? String
         sorting = []
 
         sorts = sort_params.split(',').map(&:strip).map do |sort|
           is_desc = sort.start_with?('-')
           sort = is_desc ? sort[1..-1] : sort
-          raise Exceptions::InvalidRequest, "Sorting by #{sort} is not allowed" unless allowed_sortings.include?(sort.to_sym)
+          raise AlphaApi::Exceptions::InvalidRequest, "Sorting by #{sort} is not allowed" unless allowed_sortings.include?(sort.to_sym)
           sort = association_mapper(sort)
 
           # have to includes the association to be able to sort on
@@ -213,7 +214,7 @@ module AlphaApi
       def reconcile_nested_attributes(existing_items, items_in_update)
         item_ids_in_update = items_in_update.map { |item| item['id'] }.compact
         if item_ids_in_update.uniq.length != item_ids_in_update.length
-          raise(Exceptions::InvalidRequest, 'Nested attribute IDs must be unique')
+          raise(AlphaApi::Exceptions::InvalidRequest, 'Nested attribute IDs must be unique')
         end
 
         nested_attributes = []
@@ -246,7 +247,7 @@ module AlphaApi
         invalid_resources = []
         nested_resources.each { |res| invalid_resources.push(res) unless allowed_associations.include?(res.to_sym) }
         unless invalid_resources.empty?
-          raise Exceptions::InvalidArgument, "Invalid value for include: #{invalid_resources.join(', ')}"
+          raise AlphaApi::Exceptions::InvalidArgument, "Invalid value for include: #{invalid_resources.join(', ')}"
         end
 
         nested_resources
@@ -291,7 +292,7 @@ module AlphaApi
       def reconcile_nested_attributes(existing_items, items_in_update)
         item_ids_in_update = items_in_update.map { |item| item['id'] }.compact
         if item_ids_in_update.uniq.length != item_ids_in_update.length
-          raise(Exceptions::InvalidRequest, 'Nested attribute IDs must be unique')
+          raise(AlphaApi::Exceptions::InvalidRequest, 'Nested attribute IDs must be unique')
         end
 
         nested_attributes = []
@@ -336,7 +337,7 @@ module AlphaApi
           "#{association.table_name}.#{attr_name} #{order}"
         else
           # could potencially support that as well by includes deeply nested associations
-          raise Exceptions::InvalidRequest, 'Sorting on deeply nested association is not supported'
+          raise AlphaApi::Exceptions::InvalidRequest, 'Sorting on deeply nested association is not supported'
         end
       end
 

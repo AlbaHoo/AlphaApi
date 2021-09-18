@@ -2,14 +2,23 @@ PATH
   remote: .
   specs:
     alpha_api (0.1.0)
+      actionpack
       activesupport
       api-pagination
+      cancancan
       fast_jsonapi
       kaminari
 
 GEM
   remote: https://rubygems.org/
   specs:
+    actionpack (6.1.4.1)
+      actionview (= 6.1.4.1)
+      activesupport (= 6.1.4.1)
+      rack (~> 2.0, >= 2.0.9)
+      rack-test (>= 0.6.3)
+      rails-dom-testing (~> 2.0)
+      rails-html-sanitizer (~> 1.0, >= 1.2.0)
     actionview (6.1.4.1)
       activesupport (= 6.1.4.1)
       builder (~> 3.1)
@@ -30,6 +39,7 @@ GEM
     api-pagination (4.8.2)
     ast (2.4.2)
     builder (3.2.4)
+    cancancan (3.3.0)
     concurrent-ruby (1.1.9)
     crass (1.0.6)
     erubi (1.10.0)
@@ -59,6 +69,9 @@ GEM
     parser (3.0.2.0)
       ast (~> 2.4.1)
     racc (1.5.2)
+    rack (2.2.3)
+    rack-test (1.1.0)
+      rack (>= 1.0, < 3)
     rails-dom-testing (2.0.3)
       activesupport (>= 4.2.0)
       nokogiri (>= 1.6)
@@ -90,9 +103,6 @@ PLATFORMS
 
 DEPENDENCIES
   alpha_api!
-  api-pagination
-  fast_jsonapi
-  kaminari
   rake (~> 13.0)
   rubocop (~> 0.80)
 
