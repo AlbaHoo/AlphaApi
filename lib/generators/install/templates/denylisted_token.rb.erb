@@ -1,0 +1,4 @@
+class DenylistedToken < ApplicationRecord
+  include Devise::JWT::RevocationStrategies::Denylist
+end
+

@@ -1,4 +1,5 @@
-require "active_support/concern"
+require 'active_support/concern'
+require 'active_record'
 require_relative '../exceptions'
 
 module AlphaApi
