@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    alpha_api (0.1.0)
+    alpha_api (0.1.1)
       api-pagination
       cancancan
       devise
