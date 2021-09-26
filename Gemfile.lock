@@ -2,10 +2,10 @@ PATH
   remote: .
   specs:
     alpha_api (0.1.0)
-      actionpack
-      activesupport
       api-pagination
       cancancan
+      devise
+      devise-jwt
       fast_jsonapi
       kaminari
 
@@ -38,15 +38,36 @@ GEM
       zeitwerk (~> 2.3)
     api-pagination (4.8.2)
     ast (2.4.2)
+    bcrypt (3.1.16)
     builder (3.2.4)
     cancancan (3.3.0)
     concurrent-ruby (1.1.9)
     crass (1.0.6)
+    devise (4.8.0)
+      bcrypt (~> 3.0)
+      orm_adapter (~> 0.1)
+      railties (>= 4.1.0)
+      responders
+      warden (~> 1.2.3)
+    devise-jwt (0.8.1)
+      devise (~> 4.0)
+      warden-jwt_auth (~> 0.5)
+    dry-auto_inject (0.7.0)
+      dry-container (>= 0.3.4)
+    dry-configurable (0.12.1)
+      concurrent-ruby (~> 1.0)
+      dry-core (~> 0.5, >= 0.5.0)
+    dry-container (0.7.2)
+      concurrent-ruby (~> 1.0)
+      dry-configurable (~> 0.1, >= 0.1.3)
+    dry-core (0.6.0)
+      concurrent-ruby (~> 1.0)
     erubi (1.10.0)
     fast_jsonapi (1.5)
       activesupport (>= 4.2)
     i18n (1.8.10)
       concurrent-ruby (~> 1.0)
+    jwt (2.2.3)
     kaminari (1.2.1)
       activesupport (>= 4.1.0)
       kaminari-actionview (= 1.2.1)
@@ -62,9 +83,11 @@ GEM
     loofah (2.12.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
+    method_source (1.0.0)
     minitest (5.14.4)
     nokogiri (1.12.4-x86_64-darwin)
       racc (~> 1.4)
+    orm_adapter (0.5.0)
     parallel (1.20.1)
     parser (3.0.2.0)
       ast (~> 2.4.1)
@@ -77,9 +100,18 @@ GEM
       nokogiri (>= 1.6)
     rails-html-sanitizer (1.4.2)
       loofah (~> 2.3)
+    railties (6.1.4.1)
+      actionpack (= 6.1.4.1)
+      activesupport (= 6.1.4.1)
+      method_source
+      rake (>= 0.13)
+      thor (~> 1.0)
     rainbow (3.0.0)
     rake (13.0.6)
     regexp_parser (2.1.1)
+    responders (3.0.1)
+      actionpack (>= 5.0)
+      railties (>= 5.0)
     rexml (3.2.5)
     rubocop (0.93.1)
       parallel (~> 1.10)
@@ -93,9 +125,17 @@ GEM
     rubocop-ast (1.11.0)
       parser (>= 3.0.1.1)
     ruby-progressbar (1.11.0)
+    thor (1.1.0)
     tzinfo (2.0.4)
       concurrent-ruby (~> 1.0)
     unicode-display_width (1.7.0)
+    warden (1.2.9)
+      rack (>= 2.0.9)
+    warden-jwt_auth (0.5.0)
+      dry-auto_inject (~> 0.6)
+      dry-configurable (~> 0.9)
+      jwt (~> 2.1)
+      warden (~> 1.2)
     zeitwerk (2.4.2)
 
 PLATFORMS

@@ -20,7 +20,7 @@ module AlphaApi
       end
 
       def create_user_model
-        system 'bundle exec rails generate devise User'
+        migration_template "create_devise_users.rb", "db/migrate/create_devise_users.rb", migration_version: migration_version
       end
 
       def add_denylisted_token_model
@@ -28,7 +28,20 @@ module AlphaApi
       end
 
       def add_denylisted_token_migration
-        migration_template "migration.rb", "db/migrate/add_denylisted_token.rb", migration_version: migration_version
+        migration_template "add_denylisted_token.rb", "db/migrate/add_denylisted_token.rb", migration_version: migration_version
+      end
+
+      def append_jwt_devise_initializer
+        inject_into_file 'config/initializers/devise.rb', after: "Devise.setup do |config|\n" do
+        <<~HEREDOC
+
+            config.jwt do |jwt|
+              jwt.secret = Rails.application.secrets.secret_key_base
+              jwt.expiration_time = 24.hours.to_i
+            end
+
+        HEREDOC
+        end
       end
 
       def initialize_cancancan

@@ -43,7 +43,7 @@ module AlphaApi
 
     # Runs before the app's initializer
     def before_initializer!
-      puts 'before initializer'
+      # puts 'before initializer'
       ApiPagination.configure do |config|
         config.page_param do |params|
           if params[:page].is_a?(ActionController::Parameters) && params[:page].include?(:number)
@@ -65,7 +65,7 @@ module AlphaApi
 
     # Runs after the app's initializer
     def after_initializer!
-      puts 'after initializer'
+      # puts 'after initializer'
     end
 
     private

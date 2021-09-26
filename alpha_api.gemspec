@@ -29,7 +29,8 @@ Gem::Specification.new do |spec|
 
   # Uncomment to register a new dependency of your gem
   # spec.add_dependency "example-gem", "~> 1.0"
-  spec.add_dependency 'railties'
+  spec.add_dependency 'devise-jwt'
+
   spec.add_dependency 'fast_jsonapi'
   spec.add_dependency 'devise'
   spec.add_dependency 'cancancan'
